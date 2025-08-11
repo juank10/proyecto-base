@@ -1,0 +1,3 @@
+# Requerimientos del proyecto base de Python
+# Agrega aquí los paquetes necesarios, por ejemplo:
+# requests
