@@ -1,9 +1,14 @@
+Skip to content
+Navigation Menu
+Copilot
+
+Workbench
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Base</title>
+    <title>Fundación Inclusión</title>
     <link rel="icon" href="assets/logo.png">
     <style>
         body {
@@ -21,14 +26,14 @@
         }
         .banner {
             width: 100%;
-            max-height: 260px;
+            max-height: 210px;
             object-fit: cover;
             border-bottom: 4px solid #003c82;
         }
         .logo {
-            width: 90px;
-            height: 90px;
-            margin-top: -45px;
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
             background: #fff;
             border-radius: 50%;
             box-shadow: 0 2px 12px rgba(0,0,0,0.07);
@@ -45,23 +50,27 @@
             margin-top: 10px;
             margin-bottom: 12px;
         }
-        nav a {
+        nav button {
             color: #fff;
             background: #0069d9;
-            padding: 7px 19px;
-            margin: 0 6px;
+            padding: 8px 22px;
+            margin: 0 5px;
             border-radius: 20px;
-            text-decoration: none;
+            border: none;
             font-weight: 500;
-            transition: background 0.2s;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
         }
-        nav a:hover {
+        nav button:hover, nav button.active {
             background: #004a9f;
+            transform: scale(1.05);
         }
         .container {
-            max-width: 950px;
+            max-width: 960px;
             margin: 40px auto;
-            padding: 0 16px;
+            padding: 0 14px;
         }
         section {
             background: #fff;
@@ -69,86 +78,229 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.05);
             padding: 32px 26px;
             margin-bottom: 32px;
+            display: none;
+        }
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
         }
         section h2 {
             color: #0057b7;
             margin-top: 0;
             font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .icon-mision {
+            width: 38px;
+            height: 38px;
+            vertical-align: middle;
         }
         .desc {
-            font-size: 1.07rem;
+            font-size: 1.08rem;
             color: #363636;
             margin-bottom: 22px;
         }
-        ul {
-            margin-left: 15px;
+        .img-mision {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 16px;
+            margin: 12px 0 22px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        /* Galería de imágenes */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+        .gallery img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+            object-fit: cover;
+            height: 110px;
+            transition: transform 0.2s;
+        }
+        .gallery img:hover {
+            transform: scale(1.07);
+            box-shadow: 0 3px 16px rgba(0,0,0,0.13);
+        }
+        /* Videos */
+        .videos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+        .videos iframe {
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            width: 340px;
+            height: 190px;
+        }
+        /* Formulario de contacto */
+        .contact-form {
+            max-width: 410px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .contact-form input, .contact-form textarea {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+            font-size: 1rem;
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .contact-form button {
+            background: #0057b7;
+            color: #fff;
+            padding: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .contact-form button:hover {
+            background: #004a9f;
         }
         /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
             header h1 { font-size: 1.2rem; }
             section { padding: 18px 7px; }
-            .container { padding: 0 5px; }
-            nav a { padding: 6px 11px; margin: 0 2px; font-size: 0.96rem;}
-            .logo { width: 54px; height: 54px; margin-top: -27px; }
+            .container { padding: 0 4px; }
+            nav button { padding: 6px 10px; font-size: 0.95rem;}
+            .logo { width: 48px; height: 48px; margin-top: -24px; }
+            .gallery { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+            .videos iframe { width: 98vw; height: 162px; }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navButtons = document.querySelectorAll('nav button');
+            const sections = document.querySelectorAll('section');
+            navButtons.forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    navButtons.forEach(b=>b.classList.remove('active'));
+                    btn.classList.add('active');
+                    sections.forEach((sec, jdx) => {
+                        sec.classList.toggle('active', idx===jdx);
+                    });
+                });
+            });
+            // Activar por defecto la primera sección
+            navButtons[0].classList.add('active');
+            sections[0].classList.add('active');
+        });
+    </script>
 </head>
 <body>
     <header>
-        <img src="assets/banner.jpg" alt="Banner del Proyecto Base" class="banner">
-        <img src="assets/logo.png" alt="Logo Proyecto Base" class="logo">
-        <h1>Bienvenido al Proyecto Base</h1>
+        <img src="assets/banner.jpg" alt="Banner Fundación" class="banner">
+        <img src="assets/logo.png" alt="Logo Fundación" class="logo">
+        <h1>Fundación Inclusión - Apoyo a Niños con Discapacidad</h1>
         <nav>
-            <a href="#mision">Misión</a>
-            <a href="#vision">Visión</a>
-            <a href="#actividades">Actividades</a>
-            <a href="#eventos">Eventos</a>
-            <a href="#contactos">Contactos</a>
+            <button>Misión</button>
+            <button>Visión</button>
+            <button>Actividades</button>
+            <button>Galería</button>
+            <button>Videos</button>
+            <button>Contactos</button>
         </nav>
     </header>
     <div class="container">
+        <!-- Misión -->
         <section id="mision">
-            <h2>Misión</h2>
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><circle cx="24" cy="24" r="24" fill="#90caf9"/><path d="M16 34c0-5 4-9 8-9s8 4 8 9" fill="#fff"/><circle cx="24" cy="20" r="6" fill="#fff"/><ellipse cx="24" cy="24" rx="12" ry="8" fill="none" stroke="#1976d2" stroke-width="2"/><rect x="11" y="36" width="26" height="7" rx="3.5" fill="#1976d2"/></svg>
+                Misión
+            </h2>
+            <img src="assets/mision.jpg" alt="Niños con discapacidad jugando" class="img-mision">
             <p class="desc">
-                La misión de nuestro proyecto es fomentar el crecimiento profesional y personal a través de la tecnología y la colaboración. Buscamos crear soluciones innovadoras que impacten positivamente a nuestra comunidad.
+                Brindar apoyo integral, oportunidades de desarrollo y acompañamiento a niños con discapacidad, promoviendo la inclusión, el respeto y el bienestar en su entorno familiar y social.
             </p>
         </section>
+        <!-- Visión -->
         <section id="vision">
-            <h2>Visión</h2>
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="24" fill="#a5d6a7"/><path d="M24 14l10 20H14z" fill="#fff"/><circle cx="24" cy="34" r="4" fill="#388e3c"/></svg>
+                Visión
+            </h2>
             <p class="desc">
-                Aspiramos a ser un referente en el desarrollo de iniciativas tecnológicas, promoviendo el aprendizaje continuo y el trabajo en equipo para alcanzar objetivos comunes y trascender fronteras.
+                Ser la fundación líder en apoyo, integración y defensa de los derechos de niños con discapacidad, inspirando a la sociedad para construir espacios más justos y accesibles para todos.
             </p>
         </section>
+        <!-- Actividades -->
         <section id="actividades">
-            <h2>Actividades</h2>
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="24" fill="#ffe082"/><path d="M15 33v-8a1 1 0 011-1h16a1 1 0 011 1v8" fill="#fff"/><circle cx="24" cy="21" r="5" fill="#ffd54f"/></svg>
+                Actividades
+            </h2>
             <p class="desc">
-                Realizamos diversas actividades que permiten la participación activa de nuestros integrantes y la comunidad:
+                Desarrollamos talleres, eventos deportivos, terapias ocupacionales, jornadas de integración familiar y campañas de sensibilización sobre la inclusión de niños con discapacidad.
             </p>
             <ul>
-                <li>Desarrollo de aplicaciones web y móviles.</li>
-                <li>Organización de talleres formativos.</li>
-                <li>Charlas y seminarios de tecnología.</li>
-                <li>Colaboración en proyectos de impacto social.</li>
+                <li>Talleres de arte y creatividad</li>
+                <li>Juegos deportivos adaptados</li>
+                <li>Charlas para familias y cuidadores</li>
+                <li>Campañas de sensibilización en escuelas</li>
             </ul>
         </section>
-        <section id="eventos">
-            <h2>Eventos</h2>
-            <p class="desc">
-                Ofrecemos eventos abiertos y exclusivos para compartir conocimientos, experiencias y novedades tecnológicas:
-            </p>
-            <ul>
-                <li><strong>Hackathon anual:</strong> Encuentro de innovación y creatividad.</li>
-                <li><strong>Workshop de inteligencia artificial:</strong> Capacitación práctica y teórica.</li>
-                <li><strong>Expo Proyectos:</strong> Presentación de los desarrollos más destacados.</li>
-            </ul>
+        <!-- Galería -->
+        <section id="galeria">
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="24" fill="#b39ddb"/><circle cx="17" cy="24" r="7" fill="#fff"/><rect x="26" y="17" width="8" height="13" rx="4" fill="#7e57c2"/></svg>
+                Galería
+            </h2>
+            <div class="gallery">
+                <img src="assets/gallery1.jpg" alt="Actividad Fundación 1">
+                <img src="assets/gallery2.jpg" alt="Actividad Fundación 2">
+                <img src="assets/gallery3.jpg" alt="Actividad Fundación 3">
+                <img src="assets/gallery4.jpg" alt="Actividad Fundación 4">
+            </div>
+            <p class="desc">Conoce algunos de los momentos especiales vividos por nuestros niños y familias.</p>
         </section>
+        <!-- Videos -->
+        <section id="videos">
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="24" fill="#81d4fa"/><polygon points="18,14 34,24 18,34" fill="#fff"/></svg>
+                Videos
+            </h2>
+            <div class="videos">
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" title="Video Fundación 1" frameborder="0" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID_2" title="Video Fundación 2" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <p class="desc">Mira nuestras actividades y testimonios en video. Comparte y ayúdanos a inspirar a más familias.</p>
+        </section>
+        <!-- Contactos -->
         <section id="contactos">
-            <h2>Contactos</h2>
+            <h2>
+                <svg class="icon-mision" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="24" fill="#ffab91"/><path d="M12 36c0-6 5-12 12-12s12 6 12 12" fill="#fff"/><circle cx="24" cy="18" r="6" fill="#ff7043"/></svg>
+                Contactos
+            </h2>
             <p class="desc">
-                Si deseas comunicarte con nosotros, puedes hacerlo a través de los siguientes canales. Te resolveremos dudas y te brindaremos toda la información necesaria:
+                ¿Tienes dudas o quieres colaborar? Escríbenos usando el formulario o mediante nuestros canales oficiales.
             </p>
+            <form class="contact-form" action="mailto:contacto@fundacioninclusion.com" method="POST" enctype="text/plain">
+                <input type="text" name="Nombre" placeholder="Nombre" required>
+                <input type="text" name="Apellidos" placeholder="Apellidos" required>
+                <input type="email" name="Correo" placeholder="Correo electrónico" required>
+                <textarea name="Mensaje" placeholder="Mensaje" required></textarea>
+                <button type="submit">Enviar mensaje</button>
+            </form>
             <ul>
-                <li>Email: contacto@proyectobase.com</li>
+                <li>Email: contacto@fundacioninclusion.com</li>
                 <li>Teléfono: +57 123 456 7890</li>
                 <li>Dirección: Calle 123 #45-67, Ciudad, País</li>
             </ul>
@@ -156,3 +308,145 @@
     </div>
 </body>
 </html>
+assets/banner.jpg
+
+index.html
+Press Delete to close.
+
+Preview
+
+Code
+305 lines · 12 KB
+
+index.html file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundación Inclusión</title>
+    <link rel="icon" href="assets/logo.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f7f9fa;
+            color: #222;
+        }
+        header {
+            background: #0057b7;
+            color: #fff;
+            text-align: center;
+            padding-bottom: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .banner {
+            width: 100%;
+            max-height: 210px;
+            object-fit: cover;
+            border-bottom: 4px solid #003c82;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-top: -40px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            display: inline-block;
+            border: 4px solid #0057b7;
+            object-fit: contain;
+        }
+        header h1 {
+            margin: 12px 0 8px 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        nav {
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+        nav button {
+            color: #fff;
+            background: #0069d9;
+            padding: 8px 22px;
+            margin: 0 5px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+        }
+        nav button:hover, nav button.active {
+            background: #004a9f;
+            transform: scale(1.05);
+        }
+        .container {
+Copilot said: ¡Excelente solicitud! Aquí está el plan para ¡Excelente solicitud! Aquí está el plan para tu sitio web: Botones interactivos y navegación moderna. Iconografía temática: Iconos relacionados con niños y discapacidad (usando SVG o librería de iconos libres). Imágenes asociadas a cada sección: Por ejemplo, imagen temática en Misión. Galería de imágenes y sección de videos de YouTube. Formulario de contacto: nombre, apellidos, correo, mensaje. A continuación te presento el archivo index.html completamente estructurado y listo para usar. Puedes subir tus imágenes a /assets y reemplazar las rutas cuando gustes. index.html v7 <!DOCTYPE html> <html lang="es"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Fundación Inclusión</title> Notas para ti: Reemplaza las rutas de imágenes por las tuyas en /assets (banner.jpg, logo.png, mision.jpg, gallery1.jpg, etc). Para los videos de YouTube, reemplaza VIDEO_ID_1 y VIDEO_ID_2 por los IDs de tus videos. El formulario usa mailto, pero puedes conectarlo a otra plataforma si lo prefieres. ¿Quieres que te ayude a generar iconos o imágenes IA para cada sección? ¿Necesitas ejemplos de imágenes o ayuda con los videos?
